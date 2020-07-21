@@ -25,15 +25,7 @@ io.on('connection', function (socket) {
     function SendAnswer(data) {
         this.broadcast.emit("BackAnswer", data)
     }
-    socket.on('disconnect', Disconnect)
     
-    function Disconnect() {
-        if (clients > 0) {
-            if (clients <= 2)
-                this.broadcast.emit("Disconnect")
-            clients--
-        }
-    }
 })
     http.listen(port, () => console.log(`Active on ${port} port`)) 
 
