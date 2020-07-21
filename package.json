@@ -2,11 +2,12 @@
   "name": "new",
   "version": "1.0.0",
   "description": "",
-  "main": "node file1.js",
+  "main": "file2.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node file1.js"
+    "watch": "npx watchify ./public/main.js -o ./public/bundle.js"
   },
-  "author": "",
+  "author": "JS",
   "license": "ISC",
   "dependencies": {
     "bundle": "^2.1.0",
