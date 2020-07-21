@@ -5,7 +5,7 @@
   "main": "file2.js",
   "scripts": {
     "start": "node file1.js"
-    "watch": "npx watchify ./public/main.js -o ./public/bundle.js"
+    
   },
   "author": "JS",
   "license": "ISC",
