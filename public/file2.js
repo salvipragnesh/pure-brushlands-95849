@@ -7,6 +7,7 @@ let client = {}
 navigator.mediaDevices.getUserMedia({ video: true, audio: true })
     .then(stream => {
         socket.emit('NewClient')
+        console.log(socket)
         video.srcObject = stream
         video.play()
 
@@ -17,6 +18,7 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true })
             let peer = new Peer({ initiator: (type == 'init') ? true : false, stream: stream, trickle: false })
             peer.on('stream', function (stream) {
                 CreateVideo(stream)
+                
             })
             //This isn't working in chrome; works perfectly in firefox.
             // peer.on('close', function () {
@@ -37,6 +39,7 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true })
             peer.on('signal', function (data) {
                 if (!client.gotAnswer) {
                     socket.emit('Offer', data)
+                    
                 }
             })
             client.peer = peer
@@ -47,6 +50,7 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true })
             let peer = InitPeer('notInit')
             peer.on('signal', (data) => {
                 socket.emit('Answer', data)
+                
             })
             peer.signal(offer)
             client.peer = peer
@@ -56,6 +60,7 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true })
             client.gotAnswer = true
             let peer = client.peer
             peer.signal(answer)
+            
         }
 
         function CreateVideo(stream) {
@@ -84,20 +89,10 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true })
         }
 
         
-
-        function RemovePeer() {
-            document.getElementById("peerVideo").remove();
-            document.getElementById("muteText").remove();
-            if (client.peer) {
-                client.peer.destroy()
-            }
-        }
-
         socket.on('BackOffer', FrontAnswer)
         socket.on('BackAnswer', SignalAnswer)
         socket.on('SessionActive', SessionActive)
         socket.on('CreatePeer', MakePeer)
-        socket.on('Disconnect', RemovePeer)
 
     })
     .catch(err => document.write(err))
